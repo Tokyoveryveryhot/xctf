@@ -1,0 +1,23 @@
+Foremost version 1.5.7 by Jesse Kornblum, Kris Kendall, and Nick Mikus
+Audit File
+
+Foremost started at Mon Aug 10 20:39:36 2020
+Invocation: foremost -i 功夫再高也怕菜刀.pcapng 
+Output directory: /home/dudu/桌面/learn/misc/titles/output
+Configuration file: /etc/foremost.conf
+------------------------------------------------------------------
+File: 功夫再高也怕菜刀.pcapng
+Start: Mon Aug 10 20:39:36 2020
+Length: 2 MB (2364868 bytes)
+ 
+Num	 Name (bs=512)	       Size	 File Offset	 Comment 
+
+0:	00002778.zip 	      224 B 	    1422689 	 
+Finish: Mon Aug 10 20:39:36 2020
+
+1 FILES EXTRACTED
+	
+zip:= 1
+------------------------------------------------------------------
+
+Foremost finished at Mon Aug 10 20:39:36 2020

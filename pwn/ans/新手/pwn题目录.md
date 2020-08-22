@@ -15,7 +15,8 @@ level0
 return read(0,&buf,0x200uLL)
 int callsystem() {return system("/bin/sh")}
 Linux下文件改名:mv
-64位程序逆序中寄存器占8位，64位传参顺序rdi,rsi,rdx,rcx,r8,r9
+64位程序逆序中寄存器占8位，64位传参顺序rdi,rsi,rdx,rcx,r8,r9(适用于Linux系统)
+		      64位传参顺序rcx,rdx,r8,r9(适用于Windows系统)，除前四个参数之外的任何其他参数通过栈传递，从右至左入栈
 system("/bin/sh")可以提供一个shell，使用它可以进行查看/修改/操作等动作
 IDA中栈s与r的含义，ebp和eip
 ELF直接获取函数地址：elf.symbols['callsystem']
@@ -28,7 +29,7 @@ return read(0,&buf,0x100u);
 system填写的是plt表的地址，此外注意栈的结构：调用函数地址->函数的返回地址->参数n->参数n-1->···->参数1
 题解
 system函数地址可以是plt表中的也可以是.got.plt表中的
-x32四种调用约定的参数各自放在不同的地方，x64会放在rdi,rsi,rdx,rcx,r8,r9六个寄存器里
+x32四种调用约定的参数各自放在不同的地方，x64会放在rdi,rsi,rdx,rcx,r8,r9六个寄存器里（Linux环境中），windows下参数放在rcx,rdx,r8,r9寄存器中
 调用函数时栈的结构为：调用函数地址->函数的返回地址->参数n->参数n-1->···->参数1
 
 when_did_you_born

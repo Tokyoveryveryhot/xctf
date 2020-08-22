@@ -13,7 +13,7 @@ conn.recvuntil('secret[0] is ')
 addr = int(conn.recvuntil('\n')[:-1], 16)
 log.info("v5 addr:"+hex(addr))
 
-def debug(addr1 = '0x400c7e'):
+def debug(addr1 = '0x400e33'):
     raw_input('debug')
     gdb.attach(conn, "b * " + addr1)
 debug()

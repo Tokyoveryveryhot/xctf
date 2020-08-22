@@ -1,0 +1,1 @@
+使用Winhex打开图片，得到passward

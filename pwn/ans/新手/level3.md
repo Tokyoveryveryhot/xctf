@@ -27,7 +27,7 @@ first stack 		                                                    second stack
 0x88 * 'a' 		                                                         0x88 * 'a'
 ebp 		                                                                ebp
 write@plt 		                                                        system_addr
-main_addr 		                                                        xxxx
+main_addr 	//返回地址	                                                        xxxx		//返回地址为填充
 1 		                                                                    bin_sh_addr
 write@got 		
 4

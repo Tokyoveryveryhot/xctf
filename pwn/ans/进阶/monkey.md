@@ -1,6 +1,6 @@
 本题引入了js库，估计为js语言解释器
 
-本题考察jsshell
+本题考察js shell
 它的os.system()很有用
 
 dudu@kali:~/桌面/learn/pwn/xctf/进阶/money$ ./js

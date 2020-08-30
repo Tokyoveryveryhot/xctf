@@ -4,7 +4,7 @@
 说明调试与实际运行的流程会有偏差。
 其中MessageBoxA(0, (LPCSTR)lpMem + 1, "Flag", 2u);就是三个选项的对话框
 而且进入判断语句中，有防止调试的语句__debugbreak()
-3、使用OD进行调试，进入该判断语句，使用空格或双击将0125109A的int 3改为nop，动态调试函数sub_401000，F7进行该函数内部，发现关键语句result = ((unsigned int)&v3[-a2 - 2] >> 2) + 1;对应的汇编语句为：
+3、使用OD进行调试，进入该判断语句，使用空格或双击将0125109A的int 3改为nop，动态调试函数sub_401000，F7进行该函数内部，发现关键语句mov edx, [ebp+lpMem]
 
 loc_40101F:
 xor     [edx+ecx*4], esi

@@ -6,3 +6,4 @@
 
 wp：
 1、或审计from表单代码，使用hackbar，用post方式传递auth=flag，同样可以获得flag
+2、第8条使用burpsuite的Repeater选项，添加auth=flag，发送后，接收到的Reponse包里有flag

@@ -4,7 +4,7 @@
 
 wp:
 1、使用exeinfo pe查看壳和程序的相关信息
-2、运行fule insanty查看程序详细信息
+2、运行file insanty查看程序详细信息
 3、放入IDA，发现关键字符串&strs，跟进strs
 
 

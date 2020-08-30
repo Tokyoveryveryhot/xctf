@@ -92,3 +92,10 @@ int  main(int argc, char * argv[])
     printf("%s\n",array);
     return 0;
 }
+
+4、利用python进行实现
+key="3934347b796f5f61725f616e696e74726e61696f6e6c5f6d737465797d"
+
+flag=key.decode('hex')
+print flag
+
